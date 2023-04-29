@@ -2,6 +2,7 @@ package co.istad.mobileBanking.api.user.wep;
 
 import co.istad.mobileBanking.api.user.UserService;
 import co.istad.mobileBanking.base.BaseRest;
+import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,19 @@ public class UserRestController {
                 .build();
     }
 
+    @GetMapping
+    public BaseRest<?> findAllUsers(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                    @RequestParam(name = "limit", required = false, defaultValue = "20") int limit){
+        PageInfo<UserDto> userDtoPageInfo = userService.findAllUsers(page, limit);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("User have been found successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userDtoPageInfo)
+                .build();
+    }
+
     @DeleteMapping("{id}")
     public BaseRest<?> deleteUserById(@PathVariable Integer id){
         Integer deleteId = userService.deleteUserById(id);
@@ -52,15 +66,27 @@ public class UserRestController {
                 .build();
     }
 
-    @PutMapping("{id}")
-    public BaseRest<?> updateUserByStatus(@PathVariable Integer id, @RequestBody IsDeleteDto isDeleteDto){
+    @PutMapping("{id}/is-deleted")
+    public BaseRest<?> updateUserStatusById(@PathVariable Integer id, @RequestBody IsDeleteDto isDeleteDto){
         Integer deleted = userService.updateIsDeletedStatus(id, isDeleteDto.status());
         return BaseRest.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .massage("User have been delete successfully")
+                .massage("User have been update status successfully")
                 .timestamp(LocalDateTime.now())
                 .data(deleted)
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public BaseRest<?> updateUserById(@PathVariable("id") Integer id,@RequestBody UpdateUserDto updateUserDto){
+        UserDto userDto = userService.updateUserById(id, updateUserDto);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("User have been update successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userDto)
                 .build();
     }
 }

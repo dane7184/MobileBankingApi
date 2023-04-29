@@ -18,26 +18,44 @@ public class UserProvider {
         }}.toString();
     }
 
+    public String buildSelectByIdSql(){
+        return new SQL() {{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("id=#{id}");
+        }}.toString();
+    }
+
     public String buildSelectSql(){
         return new SQL() {{
             SELECT("*");
-            FROM("users");
-            WHERE("id=#{id}");
+            FROM(tableName);
+            WHERE("is_deleted=FALSE");
+            ORDER_BY("id DESC");
         }}.toString();
     }
 
     public String buildDeleteSql(){
         return  new SQL() {{
-            DELETE_FROM("users");
+            DELETE_FROM(tableName);
             WHERE("id=#{id}");
         }}.toString();
     }
 
     public String buildUpdateIsDeletedByIdSql(){
         return  new SQL(){{
-            UPDATE("users");
+            UPDATE(tableName);
             SET("is_deleted=#{status}");
             WHERE("id=#{id}");
+        }}.toString();
+    }
+
+    public String buildUpdateByIdSql(){
+        return new SQL() {{
+            UPDATE(tableName);
+            SET("name = #{u.name}");
+            SET("gender = #{u.gender}");
+            WHERE("id = #{u.id}");
         }}.toString();
     }
 }
