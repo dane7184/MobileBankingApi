@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/v1/account_types")
 @RequiredArgsConstructor
@@ -20,6 +22,17 @@ public class AccountTypeController {
                 .code(HttpStatus.OK.value())
                 .massage("Account types have been found")
                 .data(accountTypeDtoList)
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    public BaseRest<?> findById(@PathVariable int id){
+        AccountTypeDto accountTypeDto = accountTypeService.findById(id);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("Account types have been found by id")
+                .data(accountTypeDto)
                 .build();
     }
 
@@ -41,12 +54,16 @@ public class AccountTypeController {
                 .build();
     }
 
-//    @PutMapping("/{id}")
-//    public BaseRest<?> updateById(@RequestBody int id){
-//        return BaseRest.builder()
-//                .massage("Account have been update Id = [ "+ id + " ]")
-//                .data(accountTypeService.update(id))
-//                .build();
-//    }
+    @PutMapping("/{id}")
+    public BaseRest<?> updateById(@PathVariable("id") int id, @RequestBody UpdateAccTypeDto updateAccTypeDto){
+        AccountTypeDto accountTypeDto = accountTypeService.updateById(id, updateAccTypeDto);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("User have been update successfully")
+                .timestamp(LocalDateTime.now())
+                .data(accountTypeDto)
+                .build();
+    }
 
 }

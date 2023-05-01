@@ -1,7 +1,9 @@
 package co.istad.mobileBanking.api.accounttype;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,6 +20,15 @@ public class AccountTypeServiceImpl implements AccountTypeService{
     }
 
     @Override
+    public AccountTypeDto findById(int id) {
+        AccountType accountType = accountTypeMapper.selectByID(id).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("User with %d is not found",id))
+        );
+        return accountTypeMapstruct.toDto(accountType);
+    }
+
+    @Override
     public AccountType insert(AccountType accountType) {
         accountTypeMapper.insert(accountType);
         return accountType;
@@ -29,9 +40,17 @@ public class AccountTypeServiceImpl implements AccountTypeService{
         return null;
     }
 
-//    @Override
-//    public AccountType update(int id) {
-//        accountTypeMapper.update(id);
-//        return null;
-//    }
+    @Override
+    public AccountTypeDto updateById(int id, UpdateAccTypeDto updateAccTypeDto) {
+        AccountType accountType;
+        if (accountTypeMapper.existsById(id)){
+            accountType = accountTypeMapstruct.updateAccTypeById(updateAccTypeDto);
+            accountType.setId(id);
+            accountTypeMapper.updateById(accountType);
+            return this.findById(id);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with %d is not found",id));
+    }
+
 }

@@ -9,5 +9,6 @@ public interface AccountTypeMapstruct {
 
     List<AccountTypeDto> toDtoList(List<AccountType> model);
     AccountTypeDto toDto(AccountType model);
+    AccountType updateAccTypeById(UpdateAccTypeDto updateAccTypeDto);
 
 }

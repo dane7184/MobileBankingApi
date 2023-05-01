@@ -5,9 +5,11 @@ import java.util.List;
 public interface AccountTypeService {
     List<AccountTypeDto> findAll();
 
+    AccountTypeDto findById(int id);
+
     AccountType insert(AccountType accountType);
 
     AccountType delete(int id);
 
-//    AccountType update(int id);
+    AccountTypeDto updateById(int id, UpdateAccTypeDto updateAccTypeDto);
 }

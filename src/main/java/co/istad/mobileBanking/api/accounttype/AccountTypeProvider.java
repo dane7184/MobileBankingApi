@@ -9,6 +9,14 @@ public class AccountTypeProvider {
             FROM("account_types");
         }}.toString();
     }
+
+    public String buildSelectByIdSql(){
+        return new SQL() {{
+            SELECT("*");
+            FROM("account_types");
+            WHERE("id=#{id}");
+        }}.toString();
+    }
     public String buildInsertSql(){
         return new SQL(){{
             INSERT_INTO("account_types")
@@ -24,9 +32,9 @@ public class AccountTypeProvider {
 
     public  String buildUpdateSql(){
         return new SQL(){{
-            UPDATE("account_types")
-                    .SET("name = #{name}")
-                    .WHERE("id =#{id}");
+            UPDATE("account_types");
+                    SET("name = #{a.name}");
+                    WHERE("id =#{a.id}");
         }}.toString();
     }
 }
