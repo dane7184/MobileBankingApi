@@ -41,6 +41,17 @@ public class UserRestController {
                 .build();
     }
 
+    @GetMapping("/{studentCardId}/select")
+    public BaseRest<?> selectUserByCardId(@PathVariable String studentCardId){
+        UserDto userDto =userService.findUserByCardId(studentCardId);
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("User have been found successfully")
+                .timestamp(LocalDateTime.now())
+                .data(userDto)
+                .build();
+    }
     @GetMapping
     public BaseRest<?> findAllUsers(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
                                     @RequestParam(name = "limit", required = false, defaultValue = "20") int limit){

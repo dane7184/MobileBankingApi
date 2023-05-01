@@ -11,6 +11,8 @@ public interface UserService {
 
     UserDto findUserById(Integer id);
 
+    UserDto findUserByCardId(String studentCardId);
+
     PageInfo<UserDto> findAllUsers(int page, int limit);
 
     Integer deleteUserById(Integer id);

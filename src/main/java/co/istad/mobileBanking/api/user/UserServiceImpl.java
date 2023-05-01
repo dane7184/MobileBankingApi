@@ -37,6 +37,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public UserDto findUserByCardId(String studentCardId) {
+        User user = userMapper.selectByCardId(studentCardId).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("User with %s is not found",studentCardId)));
+        return userMapStruct.userToUserDto(user);
+    }
+
+    @Override
     public PageInfo<UserDto> findAllUsers(int page, int limit) {
         PageInfo<User> userPageInfo =PageHelper.startPage(page, limit)
                 .doSelectPageInfo(userMapper::select);

@@ -1,5 +1,7 @@
 package co.istad.mobileBanking.api.user.wep;
 
-public record UpdateUserDto(String name,
-                            String gender) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdateUserDto(@NotBlank(message = "Name is required") String name,
+                            @NotBlank(message = "Gender is required") String gender) {
 }

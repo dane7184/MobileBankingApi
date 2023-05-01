@@ -26,6 +26,14 @@ public class UserProvider {
         }}.toString();
     }
 
+    public String buildSelectByCardId(){
+        return new SQL() {{
+            SELECT("*");
+            FROM(tableName);
+            WHERE("student_card_id=#{studentCardId}");
+        }}.toString();
+    }
+
     public String buildSelectSql(){
         return new SQL() {{
             SELECT("*");
