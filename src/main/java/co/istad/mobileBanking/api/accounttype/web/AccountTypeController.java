@@ -1,5 +1,7 @@
-package co.istad.mobileBanking.api.accounttype;
+package co.istad.mobileBanking.api.accounttype.web;
 
+import co.istad.mobileBanking.api.accounttype.AccountType;
+import co.istad.mobileBanking.api.accounttype.AccountTypeService;
 import co.istad.mobileBanking.base.BaseRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -3,6 +3,7 @@ package co.istad.mobileBanking.api.user;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -26,7 +27,7 @@ public interface UserMapper {
 
     @SelectProvider(type = UserProvider.class, method = "buildSelectSql")
     @ResultMap("userResultMap")
-    void select();
+    List<User> select();
 
     @Select("SELECT EXISTS(SELECT * FROM users WHERE id=#{id})")
     boolean existsById(@Param("id") Integer id);

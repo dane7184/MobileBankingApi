@@ -1,5 +1,8 @@
 package co.istad.mobileBanking.api.accounttype;
 
+import co.istad.mobileBanking.api.accounttype.web.AccountTypeDto;
+import co.istad.mobileBanking.api.accounttype.web.UpdateAccTypeDto;
+
 import java.util.List;
 
 public interface AccountTypeService {

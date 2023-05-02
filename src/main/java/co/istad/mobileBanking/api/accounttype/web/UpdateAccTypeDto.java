@@ -1,4 +1,4 @@
-package co.istad.mobileBanking.api.accounttype;
+package co.istad.mobileBanking.api.accounttype.web;
 
 import jakarta.validation.constraints.NotBlank;
 
