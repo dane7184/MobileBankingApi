@@ -15,7 +15,7 @@ public class AccountProvider {
             VALUES("password", "#{a.password}");
             VALUES("phone_number", "#{a.phoneNumber}");
             VALUES("transfer_limit", "#{a.transferLimit}");
-            VALUES("account_type", "#{a.accountType}");
+            VALUES("account_type", "#{a.accountType.id}");
         }}.toString();
     }
 
@@ -24,6 +24,22 @@ public class AccountProvider {
             SELECT("*");
             FROM(tableName);
             WHERE("id=#{id}");
+        }}.toString();
+    }
+
+    public String buildDeleteAccountById(){
+        return  new SQL() {{
+            DELETE_FROM(tableName);
+            WHERE("id=#{id}");
+        }}.toString();
+    }
+
+    public String buildUpdateAccountById(){
+        return new SQL() {{
+            UPDATE(tableName);
+            SET("pin=#{a.pin}");
+            SET("password=#{a.password}");
+            WHERE("id=#{a.id}");
         }}.toString();
     }
 }

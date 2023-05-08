@@ -1,4 +1,4 @@
-package co.istad.mobileBanking.api.account;
+package co.istad.mobileBanking.api.account.model;
 
 import co.istad.mobileBanking.api.accounttype.AccountType;
 import lombok.AllArgsConstructor;
