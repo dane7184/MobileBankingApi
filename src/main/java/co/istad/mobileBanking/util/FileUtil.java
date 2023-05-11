@@ -2,8 +2,6 @@ package co.istad.mobileBanking.util;
 
 import co.istad.mobileBanking.api.file.FileDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
