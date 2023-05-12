@@ -1,5 +1,6 @@
 package co.istad.mobileBanking.api.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,39 +8,48 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final PasswordEncoder encoder;
 
     //TODO : Define in memory user
     @Bean
-    public UserDetailsService userDetailsService() {
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-        UserDetails user = User.builder()
+        UserDetails admin = User.builder()
                 .username("admin")
-                .password("{noop}123")
+                .password(encoder.encode("1234"))
                 .roles("ADMIN")
                 .build();
         UserDetails goldUser = User.builder()
                 .username("gold")
-                .password("{noop}123")
-                .roles("ACCOUNT")
+                .password(encoder.encode("123"))
+                .roles("ADMIN","ACCOUNT")
+                .build();
+        UserDetails user = User.builder()
+                .username("user")
+                .password(encoder.encode("123"))
+                .roles("USER")
                 .build();
 
-        userDetailsManager.createUser(user);
+        userDetailsManager.createUser(admin);
         userDetailsManager.createUser(goldUser);
-        return new InMemoryUserDetailsManager(user);
+        userDetailsManager.createUser(user);
+        return userDetailsManager;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         //
-        http.csrf(csrf -> csrf.disable());
+        http.csrf(csrf -> csrf.disable()).httpBasic();
 
         //Authorize URL mapping
         http.authorizeHttpRequests(request ->{
@@ -49,7 +59,6 @@ public class SecurityConfig {
                 });
 
         // Security mechanism
-        http.httpBasic();
 
         // MAKE security
         http.sessionManagement()
