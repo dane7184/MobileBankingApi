@@ -1,8 +1,11 @@
 package co.istad.mobileBanking.api.user;
 
+import co.istad.mobileBanking.api.auth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,4 +24,7 @@ public class User {
     private String password;
     private Boolean isVerified;
     private String verifiedCode;
+
+    //User has role
+    private List<Role> roles;
 }

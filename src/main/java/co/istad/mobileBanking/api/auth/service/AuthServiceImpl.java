@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
@@ -29,12 +30,22 @@ public class AuthServiceImpl implements AuthService{
     @Value("${spring.mail.username}")
     private String appMail;
 
+    @Transactional
     @Override
     public void register(RegisterDto registerDto) {
         User user = userMapStruct.registerDtoToUser(registerDto);
+        user.setIsVerified(false);
         user.setPassword(encoder.encode(user.getPassword()));
+
 //        log.info("User: {}", user.getEmail());
-        authMapper.register(user);
+//        authMapper.register(user);
+
+        if (authMapper.register(user)){
+            //Create user roles
+            for (Integer role : registerDto.roleIds()){
+                authMapper.createUserRole(user.getId(), role);
+            }
+        }
     }
 
     @Override
@@ -44,7 +55,14 @@ public class AuthServiceImpl implements AuthService{
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Email Has not been found"));
 
-        user.setVerifiedCode(UUID.randomUUID().toString());
+        String verifiedCode = UUID.randomUUID().toString();
+
+        if (authMapper.updateVerifiedCode(email, verifiedCode)){
+            user.setVerifiedCode(verifiedCode);
+        }else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "User cannot be verified");
+        }
 
         MailUtil.Meta<?> meta = MailUtil.Meta.builder()
                 .to(email)
@@ -59,6 +77,17 @@ public class AuthServiceImpl implements AuthService{
         } catch (MessagingException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     e.getMessage());
+        }
+    }
+
+    @Override
+    public void checkVerify(String email, String verifiedCode) {
+        User user = authMapper.selectByEmailAndVerifiedCode(email, verifiedCode)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "User is not exist int the database"));
+
+        if (!user.getIsVerified()){
+            authMapper.verify(email, verifiedCode);
         }
     }
 }
