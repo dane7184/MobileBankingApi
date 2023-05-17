@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        //
+        //Disable
         http.csrf(csrf -> csrf.disable()).httpBasic();
 
         //Authorize URL mapping
@@ -40,6 +40,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/v1/auth/**").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole("ADMIN", "SYSTEM");
             auth.requestMatchers(HttpMethod.POST,"/api/v1/users/**").hasAnyRole("SYSTEM");
+            auth.anyRequest().authenticated();
         });
 
         // MAKE security

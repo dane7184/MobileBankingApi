@@ -23,16 +23,16 @@ dependencies {
     //
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.0.6'
 
-    //Mail
+    //Todo  :   Mail
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.6'
 
-    //
+    // Todo :   security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    //Pagination
+    //Todo  :   Pagination
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
 
-    //    config mapstruct with lombok
+    //Todo  :   config mapstruct with lombok
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
@@ -44,8 +44,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
     runtimeOnly 'org.postgresql:postgresql'
-//    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Todo : password Validator
+    implementation group: 'org.passay', name: 'passay', version: '1.6.3'
 }
 
 tasks.named('test') {

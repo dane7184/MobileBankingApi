@@ -1,7 +1,7 @@
 package co.istad.mobileBanking.api.auth.map;
 
 import co.istad.mobileBanking.api.auth.AuthProvider;
-import co.istad.mobileBanking.api.auth.Role;
+import co.istad.mobileBanking.api.user.Role;
 import co.istad.mobileBanking.api.user.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
