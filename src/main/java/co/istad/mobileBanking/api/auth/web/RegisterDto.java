@@ -17,6 +17,7 @@ public record RegisterDto(@NotBlank(message = "Email is required!")
                           @Password
                           String password,
                           @NotBlank(message = "Confirmed password is required")
+                          @Password
                           String confirmedPassword,
                           @NotNull(message = "Roles are required")
                           @RoleIdConstraint
