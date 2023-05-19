@@ -5,8 +5,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PasswordConstraintValidator implements ConstraintValidator<Password, String> {
     @Override

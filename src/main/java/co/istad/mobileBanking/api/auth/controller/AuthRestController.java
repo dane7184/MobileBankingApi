@@ -1,6 +1,8 @@
 package co.istad.mobileBanking.api.auth.controller;
 
 import co.istad.mobileBanking.api.auth.service.AuthService;
+import co.istad.mobileBanking.api.auth.web.AuthDto;
+import co.istad.mobileBanking.api.auth.web.LogInDto;
 import co.istad.mobileBanking.api.auth.web.RegisterDto;
 import co.istad.mobileBanking.base.BaseRest;
 import jakarta.validation.Valid;
@@ -18,6 +20,19 @@ import java.time.LocalDateTime;
 public class AuthRestController {
 
     private final AuthService authService;
+    @PostMapping("/login")
+    public BaseRest<?> login(@Valid @RequestBody LogInDto logInDto){
+
+        AuthDto authDto = authService.login(logInDto);
+
+        return BaseRest.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .massage("You have login successfully")
+                .timestamp(LocalDateTime.now())
+                .data(authDto)
+                .build();
+    }
 
     @PostMapping("/register")
     public BaseRest<?> register(@Valid @RequestBody RegisterDto registerDto){
